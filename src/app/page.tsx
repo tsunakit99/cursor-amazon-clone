@@ -4,10 +4,12 @@ import Header from '@/components/layout/Header';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-100">
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <HeroSlider />
-      <ProductGrid />
-    </main>
+      <main>
+        <HeroSlider />
+        <ProductGrid />
+      </main>
+    </div>
   );
 }

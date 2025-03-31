@@ -1,4 +1,4 @@
-import Image from 'next/image';
+"use client";
 
 // ダミーデータ
 const products = [
@@ -8,7 +8,6 @@ const products = [
     price: 129800,
     originalPrice: 157000,
     discount: 17,
-    image: '/products/laptop.jpg',
     rating: 4.5,
     reviews: 128,
   },
@@ -18,7 +17,6 @@ const products = [
     price: 18981,
     originalPrice: 20980,
     discount: 10,
-    image: '/products/tv.jpg',
     rating: 4.0,
     reviews: 256,
   },
@@ -28,7 +26,6 @@ const products = [
     price: 24280,
     originalPrice: 26980,
     discount: 10,
-    image: '/products/monitor.jpg',
     rating: 4.2,
     reviews: 89,
   },
@@ -38,7 +35,6 @@ const products = [
     price: 145160,
     originalPrice: 152800,
     discount: 5,
-    image: '/products/phone.jpg',
     rating: 4.7,
     reviews: 42,
   },
@@ -48,7 +44,6 @@ const products = [
     price: 19860,
     originalPrice: 24700,
     discount: 20,
-    image: '/products/chair.jpg',
     rating: 4.3,
     reviews: 167,
   },
@@ -56,56 +51,84 @@ const products = [
 
 const ProductGrid = () => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 max-w-screen-2xl mx-auto">
-      {products.map((product) => (
-        <div
-          key={product.id}
-          className="bg-white p-4 rounded-lg shadow hover:shadow-lg transition-shadow duration-200 flex flex-col"
-        >
-          <div className="relative h-48 mb-4">
-            <Image
-              src={product.image}
-              alt={product.title}
-              fill
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
-          <div className="space-y-2 flex-grow">
-            <h3 className="text-sm font-medium line-clamp-2 mb-1 hover:text-amazon-blue-light cursor-pointer">
-              {product.title}
-            </h3>
-            <div className="flex items-center space-x-1">
-              {[...Array(5)].map((_, i) => (
-                <span
-                  key={i}
-                  className={`text-sm ${
-                    i < Math.floor(product.rating)
-                      ? 'text-yellow-400'
-                      : 'text-gray-300'
-                  }`}
-                >
-                  ★
-                </span>
-              ))}
-              <span className="text-sm text-blue-500">({product.reviews})</span>
+    <div className="bg-[#eaeded] py-4">
+      {/* 商品グリッド */}
+      <div className="max-w-screen-2xl mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="bg-white p-4 hover:shadow-md transition-shadow"
+            >
+              {/* 割引表示とセールタグ */}
+              <div className="flex justify-between mb-2">
+                <div className="bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-sm">
+                  <span>{product.discount}%OFF</span>
+                </div>
+                <div className="text-[#c45500] text-xs font-semibold">
+                  セール
+                </div>
+              </div>
+              
+              {/* 商品画像（ダミー表示） */}
+              <div className="w-full h-32 bg-gray-100 mb-3 flex items-center justify-center text-gray-400">
+                商品画像
+              </div>
+              
+              {/* 商品情報 */}
+              <div>
+                {/* 商品名 */}
+                <h3 className="text-sm text-[#0066c0] hover:text-[#c45500] cursor-pointer mb-1 line-clamp-2">
+                  {product.title}
+                </h3>
+                
+                {/* 評価 */}
+                <div className="flex items-center mb-1">
+                  <div className="flex text-[#ffa41c]">
+                    {[...Array(5)].map((_, i) => (
+                      <span
+                        key={i}
+                        className={i < Math.floor(product.rating) ? "text-[#ffa41c]" : "text-gray-300"}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                  <span className="text-xs text-[#007185] ml-1">
+                    ({product.reviews})
+                  </span>
+                </div>
+                
+                {/* 価格 */}
+                <div className="mb-1">
+                  <div className="flex items-baseline">
+                    <span className="text-xs">￥</span>
+                    <span className="text-lg font-medium">{product.price.toLocaleString()}</span>
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    <span className="line-through">
+                      過去価格: ￥{product.originalPrice.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* 配送情報 */}
+                <div className="text-xs flex items-center mt-2">
+                  <span className="text-[#007185] font-bold mr-1">Prime</span>
+                  <span className="text-gray-700">通常配送無料</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-baseline space-x-2">
-              <span className="bg-red-600 text-white text-xs px-2 py-0.5 rounded">
-                {product.discount}%OFF
-              </span>
-              <span className="text-lg font-bold">¥{product.price.toLocaleString()}</span>
-            </div>
-            <div className="text-sm text-gray-500">
-              <span className="line-through">
-                参考: ¥{product.originalPrice.toLocaleString()}
-              </span>
-            </div>
-            <div className="text-xs text-amazon-blue mt-2">
-              <span className="font-bold">Prime</span> - 通常配送無料
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
+      </div>
+      
+      {/* ナビゲーションボタン */}
+      <div className="flex justify-end max-w-screen-2xl mx-auto px-4 mt-4">
+        <button className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center shadow-sm hover:bg-gray-300">
+          N
+        </button>
+      </div>
     </div>
   );
 };

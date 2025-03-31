@@ -1,23 +1,31 @@
 "use client";
-import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const slides = [
   {
     id: 1,
-    image: '/slider/kindle-sale.jpg',
-    title: 'Kindle Paperwhite セール',
+    title: 'fire tv stick HD',
+    discount: '30%OFF',
+    price: '¥4,880',
+    originalPrice: '¥6,980',
+    badge: 'スマイル SALE 新生活 FINAL',
   },
   {
     id: 2,
-    image: '/slider/fire-tv.jpg',
-    title: 'Fire TVスティック セール',
+    title: 'Kindle Paperwhite',
+    discount: '17%OFF',
+    price: '¥22,980',
+    originalPrice: '¥27,980',
+    badge: 'スマイル SALE 新生活 FINAL',
   },
   {
     id: 3,
-    image: '/slider/fire-tablet.jpg',
-    title: 'Fire タブレット セール',
+    title: 'Fire タブレット',
+    discount: '20%OFF',
+    price: '¥9,980',
+    originalPrice: '¥12,980',
+    badge: 'スマイル SALE 新生活 FINAL',
   },
 ];
 
@@ -40,51 +48,68 @@ const HeroSlider = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);
   };
 
+  const currentSlideData = slides[currentSlide];
+
   return (
-    <div className="relative w-full h-[300px] md:h-[400px] bg-gradient-to-b from-amazon-blue-light">
-      <div className="absolute inset-0 bg-gradient-to-t from-gray-100 z-10" />
-      
-      {slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <Image
-            src={slide.image}
-            alt={slide.title}
-            fill
-            style={{ objectFit: 'cover' }}
-            priority={index === 0}
-          />
-        </div>
-      ))}
-
-      <button
-        onClick={prevSlide}
-        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 rounded-full p-2 z-20"
-      >
-        <FiChevronLeft className="h-6 w-6" />
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/30 hover:bg-white/50 rounded-full p-2 z-20"
-      >
-        <FiChevronRight className="h-6 w-6" />
-      </button>
-      
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+    <div className="w-full">
+      {/* プログレスバー */}
+      <div className="w-full h-1 flex">
         {slides.map((_, index) => (
-          <button
-            key={index}
-            className={`w-2 h-2 rounded-full transition-colors duration-200 ${
-              index === currentSlide ? 'bg-white' : 'bg-white/50'
-            }`}
-            onClick={() => setCurrentSlide(index)}
+          <div 
+            key={index} 
+            className={`flex-1 h-full ${index === currentSlide ? 'bg-gray-300' : 'bg-gray-500'}`} 
           />
         ))}
+      </div>
+      
+      {/* メインスライダー */}
+      <div className="relative w-full overflow-hidden">
+        {/* グリーンバックグラウンド */}
+        <div className="w-full h-[300px] bg-[#1cb11a]">
+          {/* グラデーション下部 */}
+          <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#eaeded] to-transparent z-10" />
+          
+          {/* コンテンツコンテナ */}
+          <div className="relative max-w-6xl mx-auto h-full px-4">
+            {/* テキストエリア */}
+            <div className="absolute left-0 top-0 p-6 z-20">
+              <div className="bg-white inline-block px-2 py-1 rounded mb-3">
+                <p className="text-[#057a37] font-bold text-xs">{currentSlideData.badge}</p>
+              </div>
+              
+              <div className="text-white">
+                <h2 className="text-4xl font-bold mb-2">{currentSlideData.discount}</h2>
+                <div className="flex items-baseline mb-2">
+                  <span className="text-base line-through mr-2">{currentSlideData.originalPrice}</span>
+                  <span className="text-4xl font-bold">{currentSlideData.price}</span>
+                </div>
+                <h3 className="text-2xl font-bold">{currentSlideData.title}</h3>
+              </div>
+            </div>
+            
+            {/* 右側に表示する商品画像は実際の画像ファイルがないため省略 */}
+            <div className="absolute right-[10%] top-1/2 -translate-y-1/2">
+              <div className="text-white text-6xl font-bold">FireTV</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* ナビゲーションボタン */}
+        <button 
+          onClick={prevSlide} 
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-8 h-14 shadow flex items-center justify-center z-20"
+          aria-label="前のスライド"
+        >
+          <FiChevronLeft className="h-6 w-6" />
+        </button>
+        
+        <button 
+          onClick={nextSlide} 
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-8 h-14 shadow flex items-center justify-center z-20"
+          aria-label="次のスライド"
+        >
+          <FiChevronRight className="h-6 w-6" />
+        </button>
       </div>
     </div>
   );
